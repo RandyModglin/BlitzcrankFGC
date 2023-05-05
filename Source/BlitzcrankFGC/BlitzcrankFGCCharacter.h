@@ -1,10 +1,16 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
-
 #pragma once
-
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "BlitzcrankFGCCharacter.generated.h"
+
+UENUM(BlueprintType)
+enum class EDirectionalInput : uint8
+{
+	VE_Default		UMETA(DisplayName = "Standing"),
+	VE_MovingRight	UMETA(DisplayName = "Forward"),
+	VE_MovingLeft	UMETA(DisplayName = "Backward")
+};
 
 UCLASS(config=Game)
 class ABlitzcrankFGCCharacter : public ACharacter
@@ -18,6 +24,11 @@ class ABlitzcrankFGCCharacter : public ACharacter
 	/** Camera boom positioning the camera beside the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
+
+	void StartAttackL();
+	void StartAttackM();
+	void StartAttackH();
+	void StartAttackS();
 
 protected:
 
@@ -33,6 +44,21 @@ protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 	// End of APawn interface
+
+
+	//The direction the player is holding down
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		EDirectionalInput directionalInput;
+
+	//Is the player using an attack?
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacks")
+		bool isLightAttacking;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacks")
+		bool isMediumAttacking;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacks")
+		bool isHeavyAttacking;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacks")
+		bool isSpecialAttacking;
 
 
 public:

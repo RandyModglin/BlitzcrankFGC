@@ -43,6 +43,15 @@ ABlitzcrankFGCCharacter::ABlitzcrankFGCCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
+
+	directionalInput = EDirectionalInput::VE_Default;
+
+	//Player Bools
+	isLightAttacking = false;
+	isMediumAttacking = false;
+	isHeavyAttacking = false;
+	isSpecialAttacking = false;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -55,12 +64,33 @@ void ABlitzcrankFGCCharacter::SetupPlayerInputComponent(class UInputComponent* P
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ABlitzcrankFGCCharacter::MoveRight);
 
+	PlayerInputComponent->BindAction("AttackL", IE_Pressed, this, &ABlitzcrankFGCCharacter::StartAttackL);
+	//PlayerInputComponent->BindAction("AttackL", IE_Released, this, &ABlitzcrankFGCCharacter::StopAttackL);
+	PlayerInputComponent->BindAction("AttackM", IE_Pressed, this, &ABlitzcrankFGCCharacter::StartAttackM);
+	//PlayerInputComponent->BindAction("AttackM", IE_Released, this, &ABlitzcrankFGCCharacter::StopAttackM);
+	PlayerInputComponent->BindAction("AttackH", IE_Pressed, this, &ABlitzcrankFGCCharacter::StartAttackH);
+	//PlayerInputComponent->BindAction("AttackH", IE_Released, this, &ABlitzcrankFGCCharacter::StopAttackH);
+	PlayerInputComponent->BindAction("AttackS", IE_Pressed, this, &ABlitzcrankFGCCharacter::StartAttackS);
+	//PlayerInputComponent->BindAction("AttackS", IE_Released, this, &ABlitzcrankFGCCharacter::StopAttacks);
+
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &ABlitzcrankFGCCharacter::TouchStarted);
 	PlayerInputComponent->BindTouch(IE_Released, this, &ABlitzcrankFGCCharacter::TouchStopped);
 }
 
 void ABlitzcrankFGCCharacter::MoveRight(float Value)
 {
+	//UE_LOG(LogTemp, Warning, TEXT("Directional Input: %f"), Value);
+
+	if (Value > 0.20f) {
+		directionalInput = EDirectionalInput::VE_MovingRight;
+	}
+	else if (Value < -0.20f){
+		directionalInput = EDirectionalInput::VE_MovingLeft;
+	}
+	else {
+		directionalInput = EDirectionalInput::VE_Default;
+	}
+
 	// add movement in that direction
 	AddMovementInput(FVector(0.f,-1.f,0.f), Value);
 }
@@ -74,5 +104,29 @@ void ABlitzcrankFGCCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, 
 void ABlitzcrankFGCCharacter::TouchStopped(const ETouchIndex::Type FingerIndex, const FVector Location)
 {
 	StopJumping();
+}
+
+void ABlitzcrankFGCCharacter::StartAttackL()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Doing a Light Attack!"));
+	isLightAttacking = true;
+}
+
+void ABlitzcrankFGCCharacter::StartAttackM()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Doing a Medium Attack!"));
+	isMediumAttacking = true;
+}
+
+void ABlitzcrankFGCCharacter::StartAttackH()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Doing a Heavy Attack!"));
+	isHeavyAttacking = true;
+}
+
+void ABlitzcrankFGCCharacter::StartAttackS()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Doing a Special Attack!"));
+	isSpecialAttacking = true;
 }
 
