@@ -47,6 +47,9 @@ ABlitzcrankFGCCharacter::ABlitzcrankFGCCharacter()
 
 	directionalInput = EDirectionalInput::VE_Default;
 
+	//Player Floats
+	removeInputFromBufferTime = 1.0f;
+
 	//Player Bools
 	isLightAttacking = false;
 	isMediumAttacking = false;
@@ -72,6 +75,8 @@ void ABlitzcrankFGCCharacter::SetupPlayerInputComponent(class UInputComponent* P
 	//PlayerInputComponent->BindAction("AttackH", IE_Released, this, &ABlitzcrankFGCCharacter::StopAttackH);
 	PlayerInputComponent->BindAction("AttackS", IE_Pressed, this, &ABlitzcrankFGCCharacter::StartAttackS);
 	//PlayerInputComponent->BindAction("AttackS", IE_Released, this, &ABlitzcrankFGCCharacter::StopAttacks);
+
+	//PlayerInputComponent->BindAction("AddToInputBuffer", IE_Pressed, this, &ABlitzcrankFGCCharacter::AddInputToBuffer);
 
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &ABlitzcrankFGCCharacter::TouchStarted);
 	PlayerInputComponent->BindTouch(IE_Released, this, &ABlitzcrankFGCCharacter::TouchStopped);
@@ -128,5 +133,15 @@ void ABlitzcrankFGCCharacter::StartAttackS()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Doing a Special Attack!"));
 	isSpecialAttacking = true;
+}
+
+void ABlitzcrankFGCCharacter::AddInputToBuffer(FInputInfo _inputInfo)
+{
+	inputBuffer.Add(_inputInfo);
+}
+
+void ABlitzcrankFGCCharacter::RemoveInputFromBuffer()
+{
+	
 }
 

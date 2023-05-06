@@ -9,7 +9,22 @@ enum class EDirectionalInput : uint8
 {
 	VE_Default		UMETA(DisplayName = "Standing"),
 	VE_MovingRight	UMETA(DisplayName = "Forward"),
-	VE_MovingLeft	UMETA(DisplayName = "Backward")
+	VE_MovingLeft	UMETA(DisplayName = "Backward"),
+	VE_Jumping		UMETA(DisplayName = "Jumping"),
+	VE_Crouching	UMETA(DisplayName = "Crouching")
+};
+
+
+USTRUCT(BlueprintType)
+struct FInputInfo {
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+		FString inputName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+		float timeStamp;
 };
 
 UCLASS(config=Game)
@@ -46,6 +61,7 @@ protected:
 	// End of APawn interface
 
 
+
 	//The direction the player is holding down
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		EDirectionalInput directionalInput;
@@ -60,6 +76,25 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacks")
 		bool isSpecialAttacking;
 
+
+
+	//Adds Inputs to the Input Buffer
+	UFUNCTION(BlueprintCallable)
+		void AddInputToBuffer(FInputInfo _inputInfo);
+
+	//Removes Inputs from the Input Buffer
+	UFUNCTION(BlueprintCallable)
+		void RemoveInputFromBuffer();
+
+	//The array of inputs the player has performed
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+		TArray<FInputInfo> inputBuffer;
+	
+	//The Timer Handle to remove inputs from the buffer
+	FTimerHandle inputBufferTimerHandle;
+
+	//The amount of time before inputs are removed from the buffer
+	float removeInputFromBufferTime;
 
 public:
 	ABlitzcrankFGCCharacter();
