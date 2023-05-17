@@ -61,6 +61,20 @@ protected:
 	// End of APawn interface
 
 
+	//Overriding the Character and Pawn to have increased control over Jumping and Landing
+	virtual void Jump() override;
+	virtual void StopJumping() override;
+	virtual void Landed(const FHitResult& Hit) override;
+
+
+	//Begin Crouching
+	UFUNCTION(BlueprintCallable)
+		void StartCrouching();
+
+	//Stop Crouching
+	UFUNCTION(BlueprintCallable)
+		void StopCrouching();
+
 
 	//The direction the player is holding down
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
@@ -75,6 +89,22 @@ protected:
 		bool isHeavyAttacking;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacks")
 		bool isSpecialAttacking;
+
+	
+	//Is the player crouching?
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		bool isCrouching;
+
+
+
+	//Is the player walking forward
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		bool isWalkingForward;
+
+	//Is the player walking backward
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		bool isWalkingBackward;
+
 
 
 

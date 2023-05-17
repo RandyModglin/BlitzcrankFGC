@@ -32,7 +32,7 @@ ABlitzcrankFGCCharacter::ABlitzcrankFGCCharacter()
 	SideViewCameraComponent->bUsePawnControlRotation = false; // We don't want the controller rotating the camera
 
 	// Configure character movement
-	GetCharacterMovement()->bOrientRotationToMovement = true; // Face in the direction we are moving..
+	GetCharacterMovement()->bOrientRotationToMovement = false; // Face in the direction we are moving..
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f); // ...at this rotation rate
 	GetCharacterMovement()->GravityScale = 2.f;
 	GetCharacterMovement()->AirControl = 0.80f;
@@ -55,6 +55,10 @@ ABlitzcrankFGCCharacter::ABlitzcrankFGCCharacter()
 	isMediumAttacking = false;
 	isHeavyAttacking = false;
 	isSpecialAttacking = false;
+	isCrouching = false;
+
+	isWalkingForward = false;
+	isWalkingBackward = false;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -63,8 +67,10 @@ ABlitzcrankFGCCharacter::ABlitzcrankFGCCharacter()
 void ABlitzcrankFGCCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	// set up gameplay key bindings
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ABlitzcrankFGCCharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ABlitzcrankFGCCharacter::StopJumping);
+	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ABlitzcrankFGCCharacter::StartCrouching);
+	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &ABlitzcrankFGCCharacter::StopCrouching);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ABlitzcrankFGCCharacter::MoveRight);
 
 	PlayerInputComponent->BindAction("AttackL", IE_Pressed, this, &ABlitzcrankFGCCharacter::StartAttackL);
@@ -77,38 +83,62 @@ void ABlitzcrankFGCCharacter::SetupPlayerInputComponent(class UInputComponent* P
 	//PlayerInputComponent->BindAction("AttackS", IE_Released, this, &ABlitzcrankFGCCharacter::StopAttacks);
 
 	//PlayerInputComponent->BindAction("AddToInputBuffer", IE_Pressed, this, &ABlitzcrankFGCCharacter::AddInputToBuffer);
-
-	PlayerInputComponent->BindTouch(IE_Pressed, this, &ABlitzcrankFGCCharacter::TouchStarted);
-	PlayerInputComponent->BindTouch(IE_Released, this, &ABlitzcrankFGCCharacter::TouchStopped);
 }
 
 void ABlitzcrankFGCCharacter::MoveRight(float Value)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("Directional Input: %f"), Value);
+	if (!isCrouching) {
 
-	if (Value > 0.20f) {
-		directionalInput = EDirectionalInput::VE_MovingRight;
-	}
-	else if (Value < -0.20f){
-		directionalInput = EDirectionalInput::VE_MovingLeft;
-	}
-	else {
-		directionalInput = EDirectionalInput::VE_Default;
-	}
+		//UE_LOG(LogTemp, Warning, TEXT("Directional Input: %f"), Value);
 
-	// add movement in that direction
-	AddMovementInput(FVector(0.f,-1.f,0.f), Value);
+		if (directionalInput != EDirectionalInput::VE_Jumping) {
+
+			if (Value > 0.20f) {
+				directionalInput = EDirectionalInput::VE_MovingRight;
+				isWalkingForward = true;
+				isWalkingBackward = false;
+			}
+			else if (Value < -0.20f) {
+				directionalInput = EDirectionalInput::VE_MovingLeft;
+				isWalkingForward = false;
+				isWalkingBackward = true;
+			}
+			else {
+				directionalInput = EDirectionalInput::VE_Default;
+				isWalkingForward = false;
+				isWalkingBackward = false;
+			}
+
+			// add movement in that direction
+			AddMovementInput(FVector(0.f, -1.f, 0.f), Value);
+		}
+	}
 }
 
-void ABlitzcrankFGCCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
+void ABlitzcrankFGCCharacter::Jump()
 {
-	// jump on any touch
-	Jump();
+	ACharacter::Jump();
+	directionalInput = EDirectionalInput::VE_Jumping;
 }
 
-void ABlitzcrankFGCCharacter::TouchStopped(const ETouchIndex::Type FingerIndex, const FVector Location)
+void ABlitzcrankFGCCharacter::StopJumping()
 {
-	StopJumping();
+	ACharacter::StopJumping();
+}
+
+void ABlitzcrankFGCCharacter::Landed(const FHitResult& Hit)
+{
+	directionalInput = EDirectionalInput::VE_Default;
+}
+
+void ABlitzcrankFGCCharacter::StartCrouching()
+{
+	isCrouching = true;
+}
+
+void ABlitzcrankFGCCharacter::StopCrouching()
+{
+	isCrouching = false;
 }
 
 void ABlitzcrankFGCCharacter::StartAttackL()
