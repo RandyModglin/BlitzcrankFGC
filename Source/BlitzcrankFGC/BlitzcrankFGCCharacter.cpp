@@ -56,9 +56,6 @@ ABlitzcrankFGCCharacter::ABlitzcrankFGCCharacter()
 	isHeavyAttacking = false;
 	isSpecialAttacking = false;
 	isCrouching = false;
-
-	isWalkingForward = false;
-	isWalkingBackward = false;
 }
 
 //////////////////////////////////////////////////////////////////////////

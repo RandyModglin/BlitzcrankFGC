@@ -97,16 +97,6 @@ protected:
 
 
 
-	//Is the player walking forward
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-		bool isWalkingForward;
-
-	//Is the player walking backward
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-		bool isWalkingBackward;
-
-
-
 
 	//Adds Inputs to the Input Buffer
 	UFUNCTION(BlueprintCallable)
