@@ -95,6 +95,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		bool isCrouching;
 
+	//Is the player in the air?
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		bool isAirborne;
 
 
 

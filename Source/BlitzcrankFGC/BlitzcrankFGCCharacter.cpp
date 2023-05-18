@@ -38,7 +38,7 @@ ABlitzcrankFGCCharacter::ABlitzcrankFGCCharacter()
 	GetCharacterMovement()->AirControl = 0.80f;
 	GetCharacterMovement()->JumpZVelocity = 1000.f;
 	GetCharacterMovement()->GroundFriction = 3.f;
-	GetCharacterMovement()->MaxWalkSpeed = 600.f;
+	GetCharacterMovement()->MaxWalkSpeed = 250.f;
 	GetCharacterMovement()->MaxFlySpeed = 600.f;
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
@@ -56,6 +56,7 @@ ABlitzcrankFGCCharacter::ABlitzcrankFGCCharacter()
 	isHeavyAttacking = false;
 	isSpecialAttacking = false;
 	isCrouching = false;
+	isAirborne = false;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -91,19 +92,15 @@ void ABlitzcrankFGCCharacter::MoveRight(float Value)
 		if (directionalInput != EDirectionalInput::VE_Jumping) {
 
 			if (Value > 0.20f) {
+				GetCharacterMovement()->MaxWalkSpeed = 225.f;
 				directionalInput = EDirectionalInput::VE_MovingRight;
-				isWalkingForward = true;
-				isWalkingBackward = false;
 			}
 			else if (Value < -0.20f) {
+				GetCharacterMovement()->MaxWalkSpeed = 150.f;
 				directionalInput = EDirectionalInput::VE_MovingLeft;
-				isWalkingForward = false;
-				isWalkingBackward = true;
 			}
 			else {
 				directionalInput = EDirectionalInput::VE_Default;
-				isWalkingForward = false;
-				isWalkingBackward = false;
 			}
 
 			// add movement in that direction
@@ -116,6 +113,7 @@ void ABlitzcrankFGCCharacter::Jump()
 {
 	ACharacter::Jump();
 	directionalInput = EDirectionalInput::VE_Jumping;
+	isAirborne = true;
 }
 
 void ABlitzcrankFGCCharacter::StopJumping()
@@ -126,16 +124,19 @@ void ABlitzcrankFGCCharacter::StopJumping()
 void ABlitzcrankFGCCharacter::Landed(const FHitResult& Hit)
 {
 	directionalInput = EDirectionalInput::VE_Default;
+	isAirborne = false;
 }
 
 void ABlitzcrankFGCCharacter::StartCrouching()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Started Crouching"));
 	isCrouching = true;
 }
 
 void ABlitzcrankFGCCharacter::StopCrouching()
 {
-	isCrouching = false;
+	UE_LOG(LogTemp, Warning, TEXT("Stopped Crouching"));
+		isCrouching = false;
 }
 
 void ABlitzcrankFGCCharacter::StartAttackL()
