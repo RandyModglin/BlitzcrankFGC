@@ -6,6 +6,8 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "BlitzcrankFGC/Dummy.h"
+#include "BlitzcrankFGC/BlitzcrankFGCGameMode.h"
 
 ABlitzcrankFGCCharacter::ABlitzcrankFGCCharacter()
 {
@@ -46,6 +48,9 @@ ABlitzcrankFGCCharacter::ABlitzcrankFGCCharacter()
 
 
 	directionalInput = EDirectionalInput::VE_Default;
+
+	//Reference to Dummy
+	//DummyRef = ()->ABlitzcrankFGCGameMode::getDummy();
 
 	//Player Floats
 	removeInputFromBufferTime = 1.0f;

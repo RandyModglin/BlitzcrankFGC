@@ -18,6 +18,13 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	//Damage the Dummy
+	void TakeDamage(float _damageValue);
+
+	//Amount of Health the Dummy has
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+		float DummyHealth;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

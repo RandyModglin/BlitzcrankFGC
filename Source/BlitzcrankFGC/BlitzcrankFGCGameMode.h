@@ -11,6 +11,9 @@ class ABlitzcrankFGCGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
+
+	ADummy* getDummy();
+
 public:
 	ABlitzcrankFGCGameMode();
 

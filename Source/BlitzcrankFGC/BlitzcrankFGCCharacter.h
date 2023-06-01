@@ -2,6 +2,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "BlitzcrankFGC/Dummy.h"
 #include "BlitzcrankFGCCharacter.generated.h"
 
 UENUM(BlueprintType)
@@ -99,6 +100,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		bool isAirborne;
 
+
+	//Reference to the Dummy 
+	ADummy* DummyRef;
 
 
 	//Adds Inputs to the Input Buffer
