@@ -2,7 +2,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "BlitzcrankFGC/Dummy.h"
+#include "Dummy.h"
 #include "BlitzcrankFGCCharacter.generated.h"
 
 UENUM(BlueprintType)
@@ -100,11 +100,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		bool isAirborne;
 
-
-	//Reference to the Dummy 
-	ADummy* DummyRef;
-
-
 	//Adds Inputs to the Input Buffer
 	UFUNCTION(BlueprintCallable)
 		void AddInputToBuffer(FInputInfo _inputInfo);
@@ -130,4 +125,7 @@ public:
 	FORCEINLINE class UCameraComponent* GetSideViewCameraComponent() const { return SideViewCameraComponent; }
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Reference")
+		ADummy* dummyRef;
 };
