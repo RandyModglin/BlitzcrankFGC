@@ -104,11 +104,11 @@ void ABlitzcrankFGCCharacter::MoveRight(float Value)
 
 			if (Value > 0.20f) {
 				GetCharacterMovement()->MaxWalkSpeed = 225.f;
-				directionalInput = EDirectionalInput::VE_MovingForward;
+				directionalInput = EDirectionalInput::VE_MovingRight;
 			}
 			else if (Value < -0.20f) {
 				GetCharacterMovement()->MaxWalkSpeed = 150.f;
-				directionalInput = EDirectionalInput::VE_MovingBack;
+				directionalInput = EDirectionalInput::VE_MovingLeft;
 			}
 			else {
 				directionalInput = EDirectionalInput::VE_Default;
@@ -188,42 +188,44 @@ void ABlitzcrankFGCCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (dummyRef) 
-	{
-		if (auto characterMovement = GetCharacterMovement()) {
-			if (auto dummyMovement = dummyRef->GetCharacterMovement())
-			{
-				if (dummyMovement->GetActorLocation().Y >= characterMovement->GetActorLocation().Y)
+	if (directionalInput != EDirectionalInput::VE_Jumping) {
+		if (dummyRef)
+		{
+			if (auto characterMovement = GetCharacterMovement()) {
+				if (auto dummyMovement = dummyRef->GetCharacterMovement())
 				{
-					if (isFlipped)
+					if (dummyMovement->GetActorLocation().Y >= characterMovement->GetActorLocation().Y)
 					{
-						if (auto mesh = GetCapsuleComponent()->GetChildComponent(1)) //Get Mesh from Capsule Component
+						if (isFlipped)
 						{
-							transform = mesh->GetRelativeTransform();
-							scale = transform.GetScale3D();
-							scale.Y = -100;
-							transform.SetScale3D(scale);
-							mesh->SetRelativeTransform(transform);
+							if (auto mesh = GetCapsuleComponent()->GetChildComponent(1)) //Get Mesh from Capsule Component
+							{
+								transform = mesh->GetRelativeTransform();
+								scale = transform.GetScale3D();
+								scale.Y = -100;
+								transform.SetScale3D(scale);
+								mesh->SetRelativeTransform(transform);
+							}
+							dummyRef->FlipDummy();
+							isFlipped = false;
 						}
-						dummyRef->FlipDummy();
-						isFlipped = false;
 					}
-				}
 
-				else
-				{
-					if (!isFlipped)
+					else
 					{
-						if (auto mesh = GetCapsuleComponent()->GetChildComponent(1)) //Get Mesh from Capsule Component
+						if (!isFlipped)
 						{
-							transform = mesh->GetRelativeTransform();
-							scale = transform.GetScale3D();
-							scale.Y = 100;
-							transform.SetScale3D(scale);
-							mesh->SetRelativeTransform(transform);
+							if (auto mesh = GetCapsuleComponent()->GetChildComponent(1)) //Get Mesh from Capsule Component
+							{
+								transform = mesh->GetRelativeTransform();
+								scale = transform.GetScale3D();
+								scale.Y = 100;
+								transform.SetScale3D(scale);
+								mesh->SetRelativeTransform(transform);
+							}
+							dummyRef->FlipDummy();
+							isFlipped = true;
 						}
-						dummyRef->FlipDummy();
-						isFlipped = true;
 					}
 				}
 			}
