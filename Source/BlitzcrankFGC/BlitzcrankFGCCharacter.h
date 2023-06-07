@@ -9,8 +9,8 @@ UENUM(BlueprintType)
 enum class EDirectionalInput : uint8
 {
 	VE_Default		UMETA(DisplayName = "Standing"),
-	VE_MovingRight	UMETA(DisplayName = "Forward"),
-	VE_MovingLeft	UMETA(DisplayName = "Backward"),
+	VE_MovingForward	UMETA(DisplayName = "Forward"),
+	VE_MovingBack	UMETA(DisplayName = "Backward"),
 	VE_Jumping		UMETA(DisplayName = "Jumping"),
 	VE_Crouching	UMETA(DisplayName = "Crouching")
 };
@@ -77,6 +77,12 @@ protected:
 		void StopCrouching();
 
 
+	//Reference to the Dummy
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Reference")
+		ADummy* dummyRef;
+
+
+
 	//The direction the player is holding down
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		EDirectionalInput directionalInput;
@@ -99,6 +105,22 @@ protected:
 	//Is the player in the air?
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		bool isAirborne;
+
+
+
+	//Is the player turned around?
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Model")
+		bool isFlipped;
+
+	//The Character's Transform
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Model")
+		FTransform transform;
+
+	//The Character's Scale
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Model")
+		FVector scale;
+
+
 
 	//Adds Inputs to the Input Buffer
 	UFUNCTION(BlueprintCallable)
@@ -126,6 +148,6 @@ public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Reference")
-		ADummy* dummyRef;
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 };

@@ -1,4 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
+#include "Components/CapsuleComponent.h"
 #include "Dummy.h"
 
 // Sets default values
@@ -8,6 +9,12 @@ ADummy::ADummy()
 	PrimaryActorTick.bCanEverTick = true;
 
     DummyHealth = 1.0f;
+
+    isFlipped = true;
+
+	//Model variables
+	transform = FTransform();
+	scale = FVector(1.0f, 1.0f, 1.0f);
 }
 
 void ADummy::TakeDamage(float _damageValue) {
@@ -19,6 +26,35 @@ void ADummy::TakeDamage(float _damageValue) {
     if (DummyHealth < 0.0f) {
         DummyHealth = 0.0f;
     }
+}
+
+void ADummy::FlipDummy() 
+{
+	if (isFlipped)
+	{
+		if (auto mesh = GetCapsuleComponent()->GetChildComponent(1)) //Get Mesh from Capsule Component
+		{
+			transform = mesh->GetRelativeTransform();
+			scale = transform.GetScale3D();
+			scale.Y = 1;
+			transform.SetScale3D(scale);
+			mesh->SetRelativeTransform(transform);
+		}
+		isFlipped = false;
+	}
+
+	else
+	{
+		if (auto mesh = GetCapsuleComponent()->GetChildComponent(1)) //Get Mesh from Capsule Component
+		{
+			transform = mesh->GetRelativeTransform();
+			scale = transform.GetScale3D();
+			scale.Y = -1;
+			transform.SetScale3D(scale);
+			mesh->SetRelativeTransform(transform);
+		}
+		isFlipped = true;
+	}
 }
 
 // Called when the game starts or when spawned

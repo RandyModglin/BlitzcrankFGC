@@ -21,9 +21,23 @@ protected:
 	//Damage the Dummy
 	void TakeDamage(float _damageValue);
 
+
 	//Amount of Health the Dummy has
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 		float DummyHealth;
+
+
+	//Is the player turned around?
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Model")
+		bool isFlipped;
+
+	//The Character's Transform
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Model")
+		FTransform transform;
+
+	//The Character's Scale
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Model")
+		FVector scale;
 
 public:	
 	// Called every frame
@@ -31,4 +45,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	//Flip Dummy
+	void FlipDummy();
 };
