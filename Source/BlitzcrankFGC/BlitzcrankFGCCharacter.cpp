@@ -45,6 +45,7 @@ ABlitzcrankFGCCharacter::ABlitzcrankFGCCharacter()
 
 	//Player Floats
 	removeInputFromBufferTime = 1.0f;
+	maxDistanceApart = 800.0f;
 
 	//Player Bools
 	isLightAttacking = false;
@@ -84,8 +85,6 @@ void ABlitzcrankFGCCharacter::MoveRight(float Value)
 {
 	if (!isCrouching) {
 
-		//UE_LOG(LogTemp, Warning, TEXT("Directional Input: %f"), Value);
-
 		if (directionalInput != EDirectionalInput::VE_Jumping) {
 
 			if (Value > 0.20f) {
@@ -99,9 +98,16 @@ void ABlitzcrankFGCCharacter::MoveRight(float Value)
 			else {
 				directionalInput = EDirectionalInput::VE_Default;
 			}
+		}
 
-			// add movement in that direction
-			AddMovementInput(FVector(0.f, -1.f, 0.f), Value);
+		float currentDistanceApart = abs(dummyRef->GetActorLocation().Y - GetActorLocation().Y);
+
+		if (currentDistanceApart >= maxDistanceApart)
+		{
+			if ((currentDistanceApart + Value < currentDistanceApart && !isFlipped) || (currentDistanceApart - Value < currentDistanceApart && isFlipped))
+			{
+
+			}
 		}
 	}
 }

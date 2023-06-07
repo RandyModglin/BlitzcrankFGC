@@ -73,6 +73,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Reference")
 		ADummy* dummyRef;
 
+	//The maximum distance apart Blitz and the Dummy can be
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		float maxDistanceApart;
 
 
 	//The direction the player is holding down
