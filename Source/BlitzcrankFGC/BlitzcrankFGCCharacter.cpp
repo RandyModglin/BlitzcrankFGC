@@ -98,15 +98,19 @@ void ABlitzcrankFGCCharacter::MoveRight(float Value)
 			else {
 				directionalInput = EDirectionalInput::VE_Default;
 			}
-		}
 
-		float currentDistanceApart = abs(dummyRef->GetActorLocation().Y - GetActorLocation().Y);
+			float currentDistanceApart = abs(dummyRef->GetActorLocation().Y - GetActorLocation().Y);
 
-		if (currentDistanceApart >= maxDistanceApart)
-		{
-			if ((currentDistanceApart + Value < currentDistanceApart && !isFlipped) || (currentDistanceApart - Value < currentDistanceApart && isFlipped))
+			if (currentDistanceApart >= maxDistanceApart)
 			{
-
+				if ((currentDistanceApart + Value < currentDistanceApart && !isFlipped) || (currentDistanceApart - Value < currentDistanceApart && isFlipped))
+				{
+					AddMovementInput(FVector(0.0f, 1.0f, 0.0f), Value);
+				}
+			}
+			else
+			{
+				AddMovementInput(FVector(0.0f, 1.0f, 0.0f), Value);
 			}
 		}
 	}
@@ -186,7 +190,7 @@ void ABlitzcrankFGCCharacter::Tick(float DeltaTime)
 			if (auto characterMovement = GetCharacterMovement()) {
 				if (auto dummyMovement = dummyRef->GetCharacterMovement())
 				{
-					if (dummyMovement->GetActorLocation().Y >= characterMovement->GetActorLocation().Y)
+					if (dummyMovement->GetActorLocation().Y < characterMovement->GetActorLocation().Y)
 					{
 						if (isFlipped)
 						{
