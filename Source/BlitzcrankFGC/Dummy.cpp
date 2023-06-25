@@ -11,8 +11,8 @@ ADummy::ADummy()
     DummyHealth = 1.0f;
 
 	//Model variables
-	transform = FTransform();
-	scale = FVector(1.0f, 1.0f, 1.0f);
+	DummyTransform = FTransform();
+	DummyScale = FVector(1.0f, 1.0f, 1.0f);
 	isFlipped = true;
 	hurtbox = nullptr;
 }
@@ -34,11 +34,11 @@ void ADummy::FlipDummy()
 	{
 		if (auto mesh = GetCapsuleComponent()->GetChildComponent(1)) //Get Mesh from Capsule Component
 		{
-			transform = mesh->GetRelativeTransform();
-			scale = transform.GetScale3D();
-			scale.Y = 1;
-			transform.SetScale3D(scale);
-			mesh->SetRelativeTransform(transform);
+			DummyTransform = mesh->GetRelativeTransform();
+			DummyScale = DummyTransform.GetScale3D();
+			DummyScale.Y = 1;
+			DummyTransform.SetScale3D(DummyScale);
+			mesh->SetRelativeTransform(DummyTransform);
 		}
 		isFlipped = false;
 	}
@@ -47,11 +47,11 @@ void ADummy::FlipDummy()
 	{
 		if (auto mesh = GetCapsuleComponent()->GetChildComponent(1)) //Get Mesh from Capsule Component
 		{
-			transform = mesh->GetRelativeTransform();
-			scale = transform.GetScale3D();
-			scale.Y = -1;
-			transform.SetScale3D(scale);
-			mesh->SetRelativeTransform(transform);
+			DummyTransform = mesh->GetRelativeTransform();
+			DummyScale = DummyTransform.GetScale3D();
+			DummyScale.Y = -1;
+			DummyTransform.SetScale3D(DummyScale);
+			mesh->SetRelativeTransform(DummyTransform);
 		}
 		isFlipped = true;
 	}

@@ -18,8 +18,10 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+
 	//Damage the Dummy
-	void TakeDamage(float _damageValue);
+	UFUNCTION(BlueprintCallable)
+		void TakeDamage(float _damageValue);
 
 
 	//Amount of Health the Dummy has
@@ -40,11 +42,11 @@ protected:
 
 	//The Character's Transform
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Model")
-		FTransform transform;
+		FTransform DummyTransform;
 
 	//The Character's Scale
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Model")
-		FVector scale;
+		FVector DummyScale;
 
 public:	
 	// Called every frame
