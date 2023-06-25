@@ -30,6 +30,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitbox")
 		FVector hitboxLocation;
 
+	//How much damage the hitbox does
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitbox")
+		float hitboxDamage;
+
 
 protected:
 	// Called when the game starts or when spawned

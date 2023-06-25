@@ -13,8 +13,8 @@ ABlitzcrankFGCGameMode::ABlitzcrankFGCGameMode()
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
 
-	Player = NULL;
-	Dummy = NULL;
+	Player = nullptr;
+	Dummy = nullptr;
 }
 
 ADummy* ABlitzcrankFGCGameMode::getDummy() {

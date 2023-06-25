@@ -27,6 +27,13 @@ protected:
 		float DummyHealth;
 
 
+
+	//Dummy's Hurtbox
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitbox")
+		AActor* hurtbox;
+
+
+
 	//Is the player turned around?
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Model")
 		bool isFlipped;

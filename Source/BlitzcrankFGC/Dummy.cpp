@@ -10,11 +10,11 @@ ADummy::ADummy()
 
     DummyHealth = 1.0f;
 
-    isFlipped = true;
-
 	//Model variables
 	transform = FTransform();
 	scale = FVector(1.0f, 1.0f, 1.0f);
+	isFlipped = true;
+	hurtbox = nullptr;
 }
 
 void ADummy::TakeDamage(float _damageValue) {
