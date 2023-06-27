@@ -101,6 +101,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		bool isAirborne;
 
+	//Can the player move?
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		bool canMove; 
+
 
 
 	//Is the player turned around?

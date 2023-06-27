@@ -55,6 +55,7 @@ ABlitzcrankFGCCharacter::ABlitzcrankFGCCharacter()
 	isCrouching = false;
 	isAirborne = false;
 	isFlipped = false;
+	canMove = true;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -83,7 +84,7 @@ void ABlitzcrankFGCCharacter::SetupPlayerInputComponent(class UInputComponent* P
 
 void ABlitzcrankFGCCharacter::MoveRight(float Value)
 {
-	if (!isCrouching) {
+	if (canMove && !isCrouching) {
 
 		if (directionalInput != EDirectionalInput::VE_Jumping) {
 
@@ -118,9 +119,11 @@ void ABlitzcrankFGCCharacter::MoveRight(float Value)
 
 void ABlitzcrankFGCCharacter::Jump()
 {
-	ACharacter::Jump();
-	directionalInput = EDirectionalInput::VE_Jumping;
-	isAirborne = true;
+	if (canMove) {
+		ACharacter::Jump();
+		directionalInput = EDirectionalInput::VE_Jumping;
+		isAirborne = true;
+	}
 }
 
 void ABlitzcrankFGCCharacter::StopJumping()
@@ -136,6 +139,7 @@ void ABlitzcrankFGCCharacter::Landed(const FHitResult& Hit)
 
 void ABlitzcrankFGCCharacter::StartCrouching()
 {
+
 	UE_LOG(LogTemp, Warning, TEXT("Started Crouching"));
 	isCrouching = true;
 }

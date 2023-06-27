@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-#include "Components/CapsuleComponent.h"
 #include "Dummy.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 ADummy::ADummy()
