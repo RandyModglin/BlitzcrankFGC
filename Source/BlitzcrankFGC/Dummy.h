@@ -26,13 +26,13 @@ protected:
 
 	//Amount of Health the Dummy has
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
-		float DummyHealth;
+		float dummyHealth;
 
 
 
 	//Dummy's Hurtbox
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitbox")
-		AActor* hurtbox;
+		AActor* dummyHurtbox;
 
 
 
@@ -42,11 +42,11 @@ protected:
 
 	//The Character's Transform
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Model")
-		FTransform DummyTransform;
+		FTransform dummyTransform;
 
 	//The Character's Scale
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Model")
-		FVector DummyScale;
+		FVector dummyScale;
 
 public:	
 	// Called every frame

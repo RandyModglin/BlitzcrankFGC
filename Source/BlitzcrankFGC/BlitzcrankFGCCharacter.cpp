@@ -36,8 +36,9 @@ ABlitzcrankFGCCharacter::ABlitzcrankFGCCharacter()
 	//Set Starting Direction Input
 	directionalInput = EDirectionalInput::VE_Default;
 
-	//Reference to Dummy, set in Gamemode Blueprint
+	//Player References to other Actors
 	dummyRef = nullptr;
+	playerHurtbox = nullptr;
 
 	//Model variables
 	transform = FTransform();
@@ -47,13 +48,18 @@ ABlitzcrankFGCCharacter::ABlitzcrankFGCCharacter()
 	removeInputFromBufferTime = 1.0f;
 	maxDistanceApart = 800.0f;
 
+	//Player Jump Variables
+	jumpHeight = 1000.0f;
+	jumpDistance = 500.0f;
+	maxJumpCount = 1;
+	jumpCount = 0;
+
 	//Player Bools
 	isLightAttacking = false;
 	isMediumAttacking = false;
 	isHeavyAttacking = false;
 	isSpecialAttacking = false;
 	isCrouching = false;
-	isAirborne = false;
 	isFlipped = false;
 	canMove = true;
 }
@@ -119,11 +125,29 @@ void ABlitzcrankFGCCharacter::MoveRight(float Value)
 
 void ABlitzcrankFGCCharacter::Jump()
 {
-	if (canMove) {
-		ACharacter::Jump();
+	if (canMove && jumpCount < maxJumpCount) {
+		if (directionalInput == EDirectionalInput::VE_MovingLeft) {
+			LaunchPlayer(FVector(0.0f, -jumpDistance, jumpHeight), true, true, true);
+		}
+		else if (directionalInput == EDirectionalInput::VE_MovingRight) {
+			LaunchPlayer(FVector(0.0f, jumpDistance, jumpHeight), true, true, true);
+		}
+		else {
+			LaunchPlayer(FVector(0.0f, 0.0f, jumpHeight), false, true, true);
+		}
+		
+		++jumpCount;
+
 		directionalInput = EDirectionalInput::VE_Jumping;
-		isAirborne = true;
 	}
+}
+
+void ABlitzcrankFGCCharacter::LaunchPlayer(FVector _launchVelocity, bool _shouldOverrideXY, bool _shouldOverrideZ, bool _shouldIgnorePlayerCollision) {
+	if (_shouldIgnorePlayerCollision) {
+		IgnorePlayerToPlayerCollision(true);
+	}
+
+	LaunchCharacter(_launchVelocity, _shouldOverrideXY, _shouldOverrideZ);
 }
 
 void ABlitzcrankFGCCharacter::StopJumping()
@@ -134,44 +158,50 @@ void ABlitzcrankFGCCharacter::StopJumping()
 void ABlitzcrankFGCCharacter::Landed(const FHitResult& Hit)
 {
 	directionalInput = EDirectionalInput::VE_Default;
-	isAirborne = false;
+
+	IgnorePlayerToPlayerCollision(false);
+
+	jumpCount = 0;
 }
 
 void ABlitzcrankFGCCharacter::StartCrouching()
 {
-
-	UE_LOG(LogTemp, Warning, TEXT("Started Crouching"));
-	isCrouching = true;
+	if (canMove) {
+		isCrouching = true;
+	}
 }
 
 void ABlitzcrankFGCCharacter::StopCrouching()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Stopped Crouching"));
 		isCrouching = false;
 }
 
 void ABlitzcrankFGCCharacter::StartAttackL()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Doing a Light Attack!"));
-	isLightAttacking = true;
+	if (canMove) {
+		isLightAttacking = true;
+	}
 }
 
 void ABlitzcrankFGCCharacter::StartAttackM()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Doing a Medium Attack!"));
-	isMediumAttacking = true;
+	if (canMove) {
+		isMediumAttacking = true;
+	}
 }
 
 void ABlitzcrankFGCCharacter::StartAttackH()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Doing a Heavy Attack!"));
-	isHeavyAttacking = true;
+	if (canMove) {
+		isHeavyAttacking = true;
+	}
 }
 
 void ABlitzcrankFGCCharacter::StartAttackS()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Doing a Special Attack!"));
-	isSpecialAttacking = true;
+	if (canMove) {
+		isSpecialAttacking = true;
+	}
 }
 
 void ABlitzcrankFGCCharacter::AddInputToBuffer(FInputInfo _inputInfo)
@@ -188,6 +218,7 @@ void ABlitzcrankFGCCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//Makes Blitzcrank always face opponent
 	if (directionalInput != EDirectionalInput::VE_Jumping) {
 		if (dummyRef)
 		{

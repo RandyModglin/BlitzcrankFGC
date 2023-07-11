@@ -8,23 +8,23 @@ ADummy::ADummy()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-    DummyHealth = 1.0f;
+    dummyHealth = 1.0f;
 
 	//Model variables
-	DummyTransform = FTransform();
-	DummyScale = FVector(1.0f, 1.0f, 1.0f);
+	dummyTransform = FTransform();
+	dummyScale = FVector(1.0f, 1.0f, 1.0f);
 	isFlipped = true;
-	hurtbox = nullptr;
+	dummyHurtbox = nullptr;
 }
 
 void ADummy::TakeDamage(float _damageValue) {
 
     UE_LOG(LogTemp, Warning, TEXT("You dealt %f damage"), _damageValue);
 
-    DummyHealth -= _damageValue;
+    dummyHealth -= _damageValue;
 
-    if (DummyHealth < 0.0f) {
-        DummyHealth = 0.0f;
+    if (dummyHealth < 0.0f) {
+        dummyHealth = 0.0f;
     }
 }
 
@@ -34,11 +34,11 @@ void ADummy::FlipDummy()
 	{
 		if (auto mesh = GetCapsuleComponent()->GetChildComponent(1)) //Get Mesh from Capsule Component
 		{
-			DummyTransform = mesh->GetRelativeTransform();
-			DummyScale = DummyTransform.GetScale3D();
-			DummyScale.Y = 1;
-			DummyTransform.SetScale3D(DummyScale);
-			mesh->SetRelativeTransform(DummyTransform);
+			dummyTransform = mesh->GetRelativeTransform();
+			dummyScale = dummyTransform.GetScale3D();
+			dummyScale.Y = 1;
+			dummyTransform.SetScale3D(dummyScale);
+			mesh->SetRelativeTransform(dummyTransform);
 		}
 		isFlipped = false;
 	}
@@ -47,11 +47,11 @@ void ADummy::FlipDummy()
 	{
 		if (auto mesh = GetCapsuleComponent()->GetChildComponent(1)) //Get Mesh from Capsule Component
 		{
-			DummyTransform = mesh->GetRelativeTransform();
-			DummyScale = DummyTransform.GetScale3D();
-			DummyScale.Y = -1;
-			DummyTransform.SetScale3D(DummyScale);
-			mesh->SetRelativeTransform(DummyTransform);
+			dummyTransform = mesh->GetRelativeTransform();
+			dummyScale = dummyTransform.GetScale3D();
+			dummyScale.Y = -1;
+			dummyTransform.SetScale3D(dummyScale);
+			mesh->SetRelativeTransform(dummyTransform);
 		}
 		isFlipped = true;
 	}

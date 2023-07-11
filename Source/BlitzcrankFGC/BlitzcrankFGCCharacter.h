@@ -59,7 +59,6 @@ protected:
 	virtual void StopJumping() override;
 	virtual void Landed(const FHitResult& Hit) override;
 
-
 	//Begin Crouching
 	UFUNCTION(BlueprintCallable)
 		void StartCrouching();
@@ -69,6 +68,8 @@ protected:
 		void StopCrouching();
 
 
+
+
 	//Reference to the Dummy
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Reference")
 		ADummy* dummyRef;
@@ -76,6 +77,8 @@ protected:
 	//The maximum distance apart Blitz and the Dummy can be
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		float maxDistanceApart;
+
+
 
 
 	//The direction the player is holding down
@@ -93,17 +96,32 @@ protected:
 		bool isSpecialAttacking;
 
 	
+
+
+	//Can the player move?
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		bool canMove;
+
 	//Is the player crouching?
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		bool isCrouching;
 
-	//Is the player in the air?
+	//How high the player jumps
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-		bool isAirborne;
+		float jumpHeight;
 
-	//Can the player move?
+	//How far the player jumps
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-		bool canMove; 
+		float jumpDistance;
+
+	//Max number of times the player can jump before landing
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		int maxJumpCount;
+
+	//The current number of times the player has jumped since landing
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		int jumpCount;
+
 
 
 
@@ -118,6 +136,29 @@ protected:
 	//The Character's Scale
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Model")
 		FVector scale;
+
+
+
+
+	//Player's Hurtbox
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitbox")
+		AActor* playerHurtbox;
+
+	//Hurtbox Array
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitbox")
+		TArray<UStaticMeshComponent*> hurtboxArray;
+
+
+
+
+	//Ignore's Collision betwen the Player and Dummy 
+	UFUNCTION(BlueprintImplementableEvent)
+	void IgnorePlayerToPlayerCollision(bool _shouldIgnore);
+
+	//Adds Inputs to the Input Buffer
+	UFUNCTION(BlueprintCallable)
+	void LaunchPlayer(FVector _launchVelocity, bool _shouldOverrideXY, bool _shouldOverrideZ, bool _shouldIgnorePlayerCollision = false);
+
 
 
 
