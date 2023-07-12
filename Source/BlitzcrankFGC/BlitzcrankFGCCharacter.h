@@ -140,11 +140,11 @@ protected:
 
 
 
-	//Player's Hurtbox
+	//Player's Mainhurtbox
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitbox")
 		AActor* playerHurtbox;
 
-	//Hurtbox Array
+	//All of a Player's Hurtboxes
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitbox")
 		TArray<UStaticMeshComponent*> hurtboxArray;
 

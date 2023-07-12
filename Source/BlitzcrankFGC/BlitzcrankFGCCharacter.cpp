@@ -49,8 +49,8 @@ ABlitzcrankFGCCharacter::ABlitzcrankFGCCharacter()
 	maxDistanceApart = 800.0f;
 
 	//Player Jump Variables
-	jumpHeight = 1000.0f;
-	jumpDistance = 500.0f;
+	jumpHeight = 750.0f;
+	jumpDistance = 250.0f;
 	maxJumpCount = 1;
 	jumpCount = 0;
 

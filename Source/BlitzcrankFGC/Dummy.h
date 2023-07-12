@@ -34,6 +34,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitbox")
 		AActor* dummyHurtbox;
 
+	//All of a Dummy's Hurtboxes
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitbox")
+		TArray<UStaticMeshComponent*> hurtboxArray;
+
 
 
 	//Is the player turned around?
