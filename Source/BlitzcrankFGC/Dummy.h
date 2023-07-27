@@ -38,6 +38,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitbox")
 		TArray<UStaticMeshComponent*> hurtboxArray;
 
+	//The Standard Scale of the Dummy's Hurtbox
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitbox")
+		FVector standardHurtboxScale;
+
+	//The Standard Scale of the Dummy's Hurtbox
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hitbox")
+		FVector standardHurtboxOffset;
+
 
 
 	//Is the player turned around?
